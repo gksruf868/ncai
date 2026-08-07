@@ -13,6 +13,12 @@ public class ObstacleSpawner : MonoBehaviour
     [SerializeField] private float minSpawnRadius = 1.5f;
     [SerializeField] private float maxSpawnRadius = 5f;
     [SerializeField] private float spinStrength = 5f;
+    [SerializeField] private float fastBallActivationTime = 20f;
+    [SerializeField] private int fastBallChanceOutOf = 5;
+    [SerializeField] private float fastBallSpeedMultiplier = 1.5f;
+    [SerializeField] private float bigBallActivationTime = 30f;
+    [SerializeField] private int bigBallChanceOutOf = 7;
+    [SerializeField] private float bigBallSizeMultiplier = 1.5f;
 
     private float timer;
     private float elapsedTime;
@@ -48,10 +54,26 @@ public class ObstacleSpawner : MonoBehaviour
 
         GameObject obstacle = Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
 
+        float survivalTime = GameManager.Instance != null ? GameManager.Instance.SurvivalTime : elapsedTime;
+        bool isFastBall = survivalTime >= fastBallActivationTime && Random.Range(0, fastBallChanceOutOf) == 0;
+        float speedMultiplier = isFastBall ? fastBallSpeedMultiplier : 1f;
+
         Rigidbody rb = obstacle.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.angularVelocity = Random.insideUnitSphere * spinStrength;
+            rb.angularVelocity = Random.insideUnitSphere * spinStrength * speedMultiplier;
+        }
+
+        ObstacleRoller roller = obstacle.GetComponent<ObstacleRoller>();
+        if (roller != null)
+        {
+            roller.SetSpeedMultiplier(speedMultiplier);
+        }
+
+        bool isBigBall = survivalTime >= bigBallActivationTime && Random.Range(0, bigBallChanceOutOf) == 0;
+        if (isBigBall)
+        {
+            obstacle.transform.localScale *= bigBallSizeMultiplier;
         }
     }
 }

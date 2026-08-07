@@ -1888,6 +1888,12 @@ MonoBehaviour:
   minSpawnRadius: 1.5
   maxSpawnRadius: 5
   spinStrength: 5
+  fastBallActivationTime: 20
+  fastBallChanceOutOf: 5
+  fastBallSpeedMultiplier: 1.5
+  bigBallActivationTime: 30
+  bigBallChanceOutOf: 7
+  bigBallSizeMultiplier: 1.5
 --- !u!4 &1350518278
 Transform:
   m_ObjectHideFlags: 0
