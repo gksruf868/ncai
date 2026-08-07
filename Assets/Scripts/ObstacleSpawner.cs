@@ -16,21 +16,23 @@ public class ObstacleSpawner : MonoBehaviour
     [SerializeField] private float fastBallActivationTime = 20f;
     [SerializeField] private int fastBallChanceOutOf = 5;
     [SerializeField] private float fastBallSpeedMultiplier = 1.5f;
-    [SerializeField] private float bigBallActivationTime = 30f;
+    [SerializeField] private float bigBallActivationTime = 40f;
     [SerializeField] private int bigBallChanceOutOf = 7;
     [SerializeField] private float bigBallSizeMultiplier = 1.5f;
 
     private float timer;
     private float elapsedTime;
-
-    private void Start()
-    {
-        SpawnObstacle();
-    }
+    private bool hasSpawnedFirst;
 
     private void Update()
     {
-        if (GameManager.Instance != null && GameManager.Instance.IsGameOver) return;
+        if (GameManager.Instance == null || !GameManager.Instance.HasStarted || GameManager.Instance.IsGameOver) return;
+
+        if (!hasSpawnedFirst)
+        {
+            hasSpawnedFirst = true;
+            SpawnObstacle();
+        }
 
         elapsedTime += Time.deltaTime;
         timer += Time.deltaTime;

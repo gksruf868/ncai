@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isGameOver)
+        if (isGameOver || GameManager.Instance == null || !GameManager.Instance.HasStarted)
         {
             rb.linearVelocity = Vector3.zero;
             return;
